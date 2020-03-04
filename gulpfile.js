@@ -7,33 +7,32 @@ let gulp = require("gulp"),
   imageMin = require("gulp-imagemin"),
   spritesmith = require("gulp.spritesmith"),
   merge = require("merge-stream"),
-  //svg2png = require("gulp-svg2png"),
+  svg2png = require("gulp-svg2png"),
   ttf2woff2 = require("gulp-ttf2woff2"),
   babel = require("gulp-babel");
 
+let dirApp = "./app/";
+let dirDist = "./dist/";
 let opts = {
   app: {
-    dir: "app/",
-    images: this.dir + "images",
-    fonts: this.dir + "fonts",
-    js: this.dir + "js",
-    css: this.dir + "css"
+    images: dirApp + "images",
+    fonts: dirApp + "fonts",
+    js: dirApp + "js",
+    css: dirApp + "css"
   },
   dist: {
-    dir: "dist/",
-    imgDir: this.dir + "static/images/",
+    styles: dirDist + "scss/**/*.scss",
+    stylesForComp: dirDist + "scss/*.scss",
+    js: dirDist + "scripts/*.js",
+    fonts: dirDist + "static/fonts/*.ttf",
+    images: dirDist + "static/images/*.*",
+    svg: dirDist + "static/images/sprite/svg/*.*",
+    sprite: dirDist + "static/images/sprite/*.png",
+    pug: dirDist + "pages/*.pug",
+    pugAll: dirDist + "pages/**/*.pug",
 
-    styles: this.dir + "scss/**/*.scss",
-    js: this.dir + "scripts/*.js",
-    fonts: this.dir + "static/fonts/*.ttf",
-    images: this.imgDir + "*.*",
-    svg: this.imgDir + "sprite/svg/*.*",
-    sprite: this.imgDir + "sprite/*.png",
-    pug: this.dir + "pages/*.pug",
-    pugAll: this.dir + "pages/**/*.pug",
-
-    svgTo: this.imgDir + "sprite",
-    styleBase: this.dir + "scss/base/"
+    svgTo: dirDist + "static/images/sprite",
+    styleBase: dirDist + "scss/base/"
   },
   js: {
     libs: [
@@ -46,7 +45,7 @@ let opts = {
 
 gulp.task("scss", function() {
   return gulp
-    .src(opts.dist.styles)
+    .src(opts.dist.stylesForComp)
     .pipe(sass({ outputStyle: "compressed" }))
     .pipe(gulp.dest(opts.app.css))
     .pipe(browserSyns.reload({ stream: true }));
@@ -88,12 +87,12 @@ gulp.task("ttf2woff2", function() {
     .pipe(gulp.dest(opts.app.fonts));
 });
 
-/* gulp.task("svg2png", function() {
+gulp.task("svg2png", function() {
   return gulp
     .src(opts.dist.svg)
     .pipe(svg2png())
     .pipe(gulp.dest(opts.dist.svgTo));
-}); */
+});
 
 gulp.task("sprite", function() {
   var spriteData = gulp
@@ -123,7 +122,7 @@ gulp.task("pug", function buildHTML() {
         pretty: true
       })
     )
-    .pipe(gulp.dest(opts.app.dir))
+    .pipe(gulp.dest(dirApp))
     .pipe(browserSyns.reload({ stream: true }));
 });
 
@@ -134,14 +133,14 @@ gulp.task("watch", function() {
   gulp.watch(opts.dist.images, gulp.parallel("images"));
   gulp.watch(opts.dist.sprite, gulp.parallel("sprite"));
 
-  //gulp.watch(opts.dist.svg, gulp.parallel("svg2png"));
+  gulp.watch(opts.dist.svg, gulp.parallel("svg2png"));
   gulp.watch(opts.dist.fonts, gulp.parallel("ttf2woff2"));
 });
 
 gulp.task("browser-sync", function() {
   browserSyns.init({
     server: {
-      baseDir: opts.app.dir
+      baseDir: dirApp
     }
   });
 });
