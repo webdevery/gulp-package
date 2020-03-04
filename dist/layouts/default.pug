@@ -1,0 +1,17 @@
+block variables
+
+doctype html
+html(lang="ru")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title=pageTitle
+        link(src='css/style.css')
+    body
+        .wrapper
+            include ../modules/header
+            block content
+            include ../modules/footer
+        script(scr='js/libs.min.js')
+        script(scr='js/main.js')
+        block scripts
