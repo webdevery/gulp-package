@@ -7,100 +7,116 @@ let gulp = require("gulp"),
   imageMin = require("gulp-imagemin"),
   spritesmith = require("gulp.spritesmith"),
   merge = require("merge-stream"),
-  svg2png = require("gulp-svg2png"),
   ttf2woff2 = require("gulp-ttf2woff2"),
+  svgSprite = require("gulp-svg-sprites"),
+  filter = require("filter"),
   babel = require("gulp-babel");
 
 let dirApp = "./app/";
 let dirDist = "./dist/";
-let opts = {
+let _ = {
   app: {
     images: dirApp + "images",
     fonts: dirApp + "fonts",
     js: dirApp + "js",
-    css: dirApp + "css"
+    css: dirApp + "css",
+    out: "../../"
   },
-  dist: {
-    styles: dirDist + "scss/**/*.scss",
-    stylesForComp: dirDist + "scss/*.scss",
-    js: dirDist + "scripts/*.js",
-    fonts: dirDist + "static/fonts/*.ttf",
-    images: dirDist + "static/images/*.*",
-    svg: dirDist + "static/images/sprite/svg/*.*",
-    sprite: dirDist + "static/images/sprite/*.png",
-    pug: dirDist + "pages/*.pug",
-    pugAll: dirDist + "pages/**/*.pug",
-
-    svgTo: dirDist + "static/images/sprite",
-    styleBase: dirDist + "scss/base/"
+  fonts: {
+    dir: dirDist + "static/fonts/",
+    select: "*.ttf"
+  },
+  minImg: {
+    dir: dirDist + "static/images/",
+    select: "*.*"
+  },
+  sprite: {
+    png: {
+      dir: dirDist + "static/images/pngSprite/",
+      select: "*.png"
+    },
+    svg: {
+      dir: dirDist + "static/images/svgSprite/",
+      select: "*.svg"
+    }
+  },
+  pug: {
+    dir: dirDist + "templates/",
+    select: {
+      pages: "pages/*.pug",
+      all: "**/*.pug"
+    }
+  },
+  style: {
+    base: dirDist + "scss/base/",
+    dir: dirDist + "scss/",
+    select: {
+      conv: "*.scss",
+      all: "**/*.scss"
+    }
   },
   js: {
     libs: [
       "node_modules/jquery/src/jquery.js",
       "node_modules/fancybox/dist/js/jquery.fancybox.js",
       "node_modules/swiper/js/swiper.js"
-    ]
+    ],
+    select: "*.js",
+    dir: dirDist + "scripts/"
   }
 };
 
 gulp.task("scss", function() {
   return gulp
-    .src(opts.dist.stylesForComp)
+    .src(_.style.dir + _.style.select.conv)
     .pipe(sass({ outputStyle: "compressed" }))
-    .pipe(gulp.dest(opts.app.css))
+    .pipe(gulp.dest(_.app.css))
     .pipe(browserSyns.reload({ stream: true }));
 });
 
 gulp.task("libs-js", function() {
   return gulp
-    .src(opts.js.libs)
+    .src(_.js.libs)
     .pipe(concat("libs.min.js"))
     .pipe(uglify())
-    .pipe(gulp.dest(opts.app.js))
+    .pipe(gulp.dest(_.app.js))
     .pipe(browserSyns.reload({ stream: true }));
 });
 
 gulp.task("js", function() {
   return gulp
-    .src(opts.dist.js)
+    .src(_.js.dir + _.js.select)
     .pipe(
       babel({
         presets: ["@babel/env"]
       })
     )
-    .pipe(gulp.dest(opts.app.js))
+    .pipe(gulp.dest(_.app.js))
     .pipe(browserSyns.reload({ stream: true }));
 });
 
 gulp.task("images", function() {
   return gulp
-    .src(opts.dist.images)
+    .src(_.minImg.dir + _.minImg.select)
     .pipe(imageMin())
-    .pipe(gulp.dest(opts.app.images))
+    .pipe(gulp.dest(_.app.images))
     .pipe(browserSyns.reload({ stream: true }));
 });
 
 gulp.task("ttf2woff2", function() {
   return gulp
-    .src(opts.dist.fonts)
+    .src(_.fonts.dir + _.fonts.select)
     .pipe(ttf2woff2())
-    .pipe(gulp.dest(opts.app.fonts));
+    .pipe(gulp.dest(_.app.fonts));
 });
 
-gulp.task("svg2png", function() {
-  return gulp
-    .src(opts.dist.svg)
-    .pipe(svg2png())
-    .pipe(gulp.dest(opts.dist.svgTo));
-});
-
-gulp.task("sprite", function() {
+gulp.task("pngSprite", function() {
   var spriteData = gulp
-    .src(opts.dist.sprite) // путь, откуда берем картинки для спрайта
+    .src(_.sprite.png.dir + _.sprite.png.select) // путь, откуда берем картинки для спрайта
     .pipe(
       spritesmith({
         imgName: "sprite.png",
-        cssName: "sprite.scss",
+        cssName: "pngSprite.scss",
         cssFormat: "scss",
         algorithm: "binary-tree",
         cssVarMap: function(sprite) {
@@ -108,15 +124,31 @@ gulp.task("sprite", function() {
         }
       })
     );
-  var cssStream = spriteData.css.pipe(gulp.dest(opts.dist.styleBase)); // путь, куда сохраняем стили
-  var imgStream = spriteData.img.pipe(gulp.dest(opts.app.images)); // путь, куда сохраняем картинку
+  var cssStream = spriteData.css.pipe(gulp.dest(_.style.base)); // путь, куда сохраняем стили
+  var imgStream = spriteData.img.pipe(gulp.dest(_.app.images)); // путь, куда сохраняем картинку
 
   return merge(imgStream, cssStream);
 });
 
+gulp.task("svgSprite", function() {
+  return gulp
+    .src(_.sprite.svg.dir + _.sprite.svg.select)
+    .pipe(
+      svgSprite({
+        selector: "svg-%f",
+        cssFile: _.app.out + _.style.base + "svgSprite.scss",
+        svg: {
+          sprite: "sprite.svg"
+        },
+        preview: false
+      })
+    )
+    .pipe(gulp.dest(_.app.images));
+});
+
 gulp.task("pug", function buildHTML() {
   return gulp
-    .src(opts.dist.pug)
+    .src(_.pug.dir + _.pug.select.pages)
     .pipe(
       pug({
         pretty: true
@@ -127,14 +159,28 @@ gulp.task("pug", function buildHTML() {
 });
 
 gulp.task("watch", function() {
-  gulp.watch(opts.dist.styles, gulp.parallel("scss"));
-  gulp.watch(opts.dist.js, gulp.parallel("js"));
-  gulp.watch(opts.dist.pugAll, gulp.parallel("pug"));
-  gulp.watch(opts.dist.images, gulp.parallel("images"));
-  gulp.watch(opts.dist.sprite, gulp.parallel("sprite"));
+  //Стили и скрипты
+  gulp.watch(_.style.dist + _.style.select.all, gulp.parallel("scss"));
+  gulp.watch(_.js.dist + _.js.select, gulp.parallel("js"));
 
-  gulp.watch(opts.dist.svg, gulp.parallel("svg2png"));
-  gulp.watch(opts.dist.fonts, gulp.parallel("ttf2woff2"));
+  //Сборка страниц из шаблонов
+  gulp.watch(_.pug.dir + _.pug.select.all, gulp.parallel("pug"));
+
+  //Сжатие картинок
+  gulp.watch(_.minImg.dir + _.minImg.select, gulp.parallel("images"));
+
+  //спрайты
+  gulp.watch(
+    _.sprite.png.dist + _.sprite.png.select,
+    gulp.parallel("pngSprite")
+  );
+  gulp.watch(
+    _.sprite.svg.dist + _.sprite.svg.select,
+    gulp.parallel("svgSprite")
+  );
+
+  //конвертация
+  gulp.watch(_.fonts.dir + _.fonts.select, gulp.parallel("ttf2woff2"));
 });
 
 gulp.task("browser-sync", function() {
@@ -153,7 +199,8 @@ gulp.task(
     "js",
     "pug",
     "images",
-    "sprite",
+    "pngSprite",
+    "svgSprite",
     "browser-sync",
     "watch"
   )

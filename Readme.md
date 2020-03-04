@@ -6,11 +6,6 @@
 Для yarn:
     -загрузка зависимостей
         $ yarn
-            Если будет ругаться используйте 
-            $ yarn --ignore-engines
-    -при установке новых пакетов может возникать проблема несовместимости модулей
-        для ибежания этого юзайте
-            $yarn add name_module --ignore-engines
 
 Общее
     -Для использования Тасков установите модуль gulp-cli глобально
@@ -24,17 +19,21 @@
         
     -Исходники проекта лежат в папке
         ./dist
-            |-layouts       шаблоны для pug
-            |-mixins        миксины для pug
-            |-pages         страницы проекта
-            |-scripts       исходные файлы скриптов
-            |-scss          исходные файлы стилей
-            | |-base        подключение шрифтов, миксины, стили для спрайтов
-            |-static
-              |-fonts       исходные файлы шрифтов
-              |-images      изображения проекта (будут автоматически ужиматься и создаваться в ./app/images/)
-                |-sprite    изображени .png формата для спрайта
-                  |-svg     изображения .svg формата для спрайта (будут конвертированы в .png в папку выше текущей)
+            |-templates
+            | |-layouts         шаблоны для pug
+            | |-mixins          миксины для pug
+            | |-pages           страницы проекта
+            |-scripts           исходные файлы скриптов
+            |-scss              исходные файлы стилей
+            | |-base            подключение шрифтов, миксины, стили для спрайтов
+            |-static    
+              |-fonts           исходные файлы шрифтов
+              |-images          изображения проекта (будут автоматически ужиматься и создаваться в ./app/images/)
+                |-pngSprite     изображени .png формата для спрайта
+                |                   class"icon-file_name"
+                |   
+                |-svgSprite     изображени .svg формата для спрайта
+                                    class"icon svg-file_name"
     
     -запуск сервера
         $ gulp
@@ -48,20 +47,20 @@
                     $ yarn gulp имя_таска
 
         -таски:
-            - svg2png
-                конвертация svg в png
-                    из папки ./dist/static/images/sprite/svg
-                    в папку ./dist/static/images/sprite
 
             - ttf2woff2
                 конвертация шрифтов ttf в woff2
                     из папки ./dist/static/fonts/
                     в папку ./app/fonts
 
-            - sprite
-                формирование спрайта
-                    из файлов ./dist/static/images/sprite/*.png
+            - pngSprite
+                формирование спрайта из .png
+                    из файлов ./dist/static/images/pngSprite/*.png
                     в файл ./app/images/sprite.png
+            - svgSprite
+                формирование спрайта из .svg
+                    из файлов ./dist/static/images/svgSprite/*.png
+                    в файл ./app/images/sprite.svg
 
             - scss
                 минификация и объединение всех файлов стилей в 
@@ -99,6 +98,7 @@
                         "js",
                         "pug",
                         "images",
-                        "sprite",
+                        "pngSprite",
+                        "svgSprite",
                         "browser-sync",
                         "watch"

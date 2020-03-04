@@ -1,5 +1,7 @@
-@import '../../node_modules/swiper/swiper';
-@import '../../node_modules/fancybox/dist/css/fancybox.css';
-@import 'base/mixins.scss';
-@import 'base/sprite.scss';
-@import 'base/fonts.scss';
+@import "../../node_modules/swiper/swiper";
+@import "../../node_modules/fancybox/dist/scss/jquery.fancybox";
+@import "../../node_modules/normalize.css/normalize";
+@import "base/mixins.scss";
+@import "base/pngSprite.scss";
+@import "base/svgSprite.scss";
+@import "base/fonts.scss";
