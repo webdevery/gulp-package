@@ -1,32 +1,46 @@
 {
-  "name": "EmptyProjectsGulp_WebDevery",
-  "version": "0.3.0",
+  "name": "gulpBuildWebDevery",
+  "version": "0.4.0",
   "main": "index.js",
   "author": "Dmitry Antonov",
+  "description": "https://github.com/webdevery/gulp-package.git",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.8.6",
-    "@babel/preset-env": "^7.8.6",
-    "core-js": "^3.6.4",
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "autoprefixer": "^9.7.4",
+    "babel-loader": "^8.0.6",
     "bemto.pug": "^2.1.0",
     "browser-sync": "^2.26.7",
+    "core-js": "^3.6.4",
     "filter": "^0.1.1",
     "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-concat": "^2.6.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-cssnano": "^2.1.3",
     "gulp-imagemin": "^7.1.0",
+    "gulp-postcss": "^8.0.0",
     "gulp-pug": "^4.0.1",
+    "gulp-rename": "^2.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-svg-sprites": "^4.1.2",
     "gulp-ttf2woff2": "^3.0.0",
-    "gulp-uglify": "^3.0.2",
     "gulp.spritesmith": "^6.11.0",
+    "jade-get-data": "^1.0.1",
     "merge-stream": "^2.0.0",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "postcss-discard-comments": "^4.0.2",
+    "postcss-import": "^12.0.1",
+    "webpack": "^4.42.0",
+    "webpack-stream": "^5.2.1"
   },
   "dependencies": {
     "fancybox": "^3.0.1",
     "jquery": "^3.4.1",
     "swiper": "^5.3.6"
+  },
+  "scripts": {
+    "watch": "gulp watch",
+    "dev": "gulp dev",
+    "build": "gulp build"
   }
 }

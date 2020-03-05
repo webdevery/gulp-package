@@ -1,11 +1,24 @@
 Для npm:
     -загрузка зависимостей
         $ npm install
+    -сборка проекта
+        $ npm build
+    -режим отслеживания изменений
+        $ npm watch
+    -режим разработки(включает в себя 2 предыдущих + browser-sync)
+        $ npm dev
 
 
 Для yarn:
     -загрузка зависимостей
         $ yarn
+    -сборка проекта
+        $ yarn build
+    -режим отслеживания изменений
+        $ yarn watch
+    -режим разработки(включает в себя 2 предыдущих + browser-sync)
+        $ yarn dev
+    
 
 Общее
     -Для использования Тасков установите модуль gulp-cli глобально
@@ -15,10 +28,11 @@
         ./gulpfile.js
 
     -Проект собираеться в папку
-        ./app
+        ./dist
         
     -Исходники проекта лежат в папке
-        ./dist
+        ./app
+            |-data              контент для pug
             |-templates
             | |-layouts         шаблоны для pug
             | |-mixins          миксины для pug
@@ -50,38 +64,38 @@
 
             - ttf2woff2
                 конвертация шрифтов ttf в woff2
-                    из папки ./dist/static/fonts/
-                    в папку ./app/fonts
+                    из папки ./app/static/fonts/
+                    в папку ./dist/fonts
 
             - pngSprite
                 формирование спрайта из .png
-                    из файлов ./dist/static/images/pngSprite/*.png
-                    в файл ./app/images/sprite.png
+                    из файлов ./app/static/images/pngSprite/*.png
+                    в файл ./dist/images/sprite.png
             - svgSprite
                 формирование спрайта из .svg
-                    из файлов ./dist/static/images/svgSprite/*.png
-                    в файл ./app/images/sprite.svg
+                    из файлов ./app/static/images/svgSprite/*.png
+                    в файл ./dist/images/sprite.svg
 
             - scss
                 минификация и объединение всех файлов стилей в 
-                    ./app/css/style.css
+                    ./dist/css/style.css
 
             - libs-js
                 минификация и объединение всех скриптов плагинов указанных в файле ./gulpfile.js в опциях в файл
-                    ./app/js/libs.min.js
+                    ./dist/js/libs.min.js
 
             - js
                 преобразование скриптов проекта 
                     es6 => es5
-                    в ./app/js/main.js
+                    в ./dist/js/main.js
 
             - images
                 сжатие изображений без потери качества
-                    в папку ./app/images/
+                    в папку ./dist/images/
 
             - pug
                 сборка страниц
-                    ./app
+                    ./dist
 
             - watch
                 запуск observer для контроля изменений в файлах и запуска необходимых тасков для пересборки проекта

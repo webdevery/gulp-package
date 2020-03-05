@@ -6,12 +6,11 @@ html(lang="ru")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title=pageTitle
-        link(src='css/style.css')
+        link(href='css/style.min.css' rel='stylesheet')
     body
         .wrapper
             include ../modules/header
             block content
             include ../modules/footer
-        script(scr='js/libs.min.js')
-        script(scr='js/main.js')
+        script(src='js/scripts.min.js')
         block scripts

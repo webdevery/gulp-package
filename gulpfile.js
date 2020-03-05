@@ -1,8 +1,9 @@
 let gulp = require("gulp"),
   sass = require("gulp-sass"),
+  postcss = require('gulp-postcss'),
+  cssnano = require('gulp-cssnano'),
+  rename = require('gulp-rename'),
   browserSyns = require("browser-sync"),
-  uglify = require("gulp-uglify"),
-  concat = require("gulp-concat"),
   pug = require("gulp-pug"),
   imageMin = require("gulp-imagemin"),
   spritesmith = require("gulp.spritesmith"),
@@ -10,46 +11,52 @@ let gulp = require("gulp"),
   ttf2woff2 = require("gulp-ttf2woff2"),
   svgSprite = require("gulp-svg-sprites"),
   filter = require("filter"),
-  babel = require("gulp-babel");
+  webpack = require("webpack-stream"),
+  getData = require("jade-get-data")("app/data"),
+  clean = require("gulp-clean");
 
-let dirApp = "./app/";
 let dirDist = "./dist/";
+let dirApp = "./app/";
 let _ = {
-  app: {
-    images: dirApp + "images",
-    fonts: dirApp + "fonts",
-    js: dirApp + "js",
-    css: dirApp + "css",
+  dist: {
+    images: dirDist + "images/",
+    fonts: dirDist + "fonts/",
+    js: dirDist + "js/",
+    css: dirDist + "css/",
     out: "../../"
   },
   fonts: {
-    dir: dirDist + "static/fonts/",
+    dir: dirApp + "static/fonts/",
     select: "*.ttf"
   },
   minImg: {
-    dir: dirDist + "static/images/",
+    dir: dirApp + "static/images/",
     select: "*.*"
   },
   sprite: {
     png: {
-      dir: dirDist + "static/images/pngSprite/",
+      dir: dirApp + "static/images/pngSprite/",
       select: "*.png"
     },
     svg: {
-      dir: dirDist + "static/images/svgSprite/",
+      dir: dirApp + "static/images/svgSprite/",
       select: "*.svg"
     }
   },
   pug: {
-    dir: dirDist + "templates/",
+    dir: dirApp + "templates/",
+    data: {
+      dir: dirApp + "data/",
+      select: "**/*.json"
+    },
     select: {
       pages: "pages/*.pug",
       all: "**/*.pug"
     }
   },
   style: {
-    base: dirDist + "scss/base/",
-    dir: dirDist + "scss/",
+    base: dirApp + "scss/base/",
+    dir: dirApp + "scss/",
     select: {
       conv: "*.scss",
       all: "**/*.scss"
@@ -61,55 +68,60 @@ let _ = {
       "node_modules/fancybox/dist/js/jquery.fancybox.js",
       "node_modules/swiper/js/swiper.js"
     ],
-    select: "*.js",
-    dir: dirDist + "scripts/"
+    select: "**/*.js",
+    dir: dirApp + "scripts/",
+    start: "index.js"
+  }
+};
+let WPConf = {
+  output: {
+    filename: "scripts.min.js"
+  },
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader"
+        }
+      }
+    ]
   }
 };
 
+///Работа со стилями
 gulp.task("scss", function() {
   return gulp
     .src(_.style.dir + _.style.select.conv)
     .pipe(sass({ outputStyle: "compressed" }))
-    .pipe(gulp.dest(_.app.css))
+    .pipe(postcss([
+      require('autoprefixer'),
+      require('postcss-discard-comments'),
+      require('postcss-import'),
+    ]))
+    .pipe(cssnano({ zIndex: false }))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest(_.dist.css))
     .pipe(browserSyns.reload({ stream: true }));
 });
 
-gulp.task("libs-js", function() {
-  return gulp
-    .src(_.js.libs)
-    .pipe(concat("libs.min.js"))
-    .pipe(uglify())
-    .pipe(gulp.dest(_.app.js))
-    .pipe(browserSyns.reload({ stream: true }));
-});
-
+/////Работа со скриптами
 gulp.task("js", function() {
   return gulp
-    .src(_.js.dir + _.js.select)
-    .pipe(
-      babel({
-        presets: ["@babel/env"]
-      })
-    )
-    .pipe(gulp.dest(_.app.js))
-    .pipe(browserSyns.reload({ stream: true }));
+    .src(_.js.dir + _.js.start)
+    .pipe(webpack(WPConf))
+    .pipe(gulp.dest(_.dist.js));
 });
 
+/////Работа с картинками
 gulp.task("images", function() {
   return gulp
     .src(_.minImg.dir + _.minImg.select)
     .pipe(imageMin())
-    .pipe(gulp.dest(_.app.images))
+    .pipe(gulp.dest(_.dist.images))
     .pipe(browserSyns.reload({ stream: true }));
 });
-
-gulp.task("ttf2woff2", function() {
-  return gulp
-    .src(_.fonts.dir + _.fonts.select)
-    .pipe(ttf2woff2())
-    .pipe(gulp.dest(_.app.fonts));
-});
-
 gulp.task("pngSprite", function() {
   var spriteData = gulp
     .src(_.sprite.png.dir + _.sprite.png.select) // путь, откуда берем картинки для спрайта
@@ -125,83 +137,95 @@ gulp.task("pngSprite", function() {
       })
     );
   var cssStream = spriteData.css.pipe(gulp.dest(_.style.base)); // путь, куда сохраняем стили
-  var imgStream = spriteData.img.pipe(gulp.dest(_.app.images)); // путь, куда сохраняем картинку
+  var imgStream = spriteData.img.pipe(gulp.dest(_.dist.images)); // путь, куда сохраняем картинку
 
   return merge(imgStream, cssStream);
 });
-
 gulp.task("svgSprite", function() {
   return gulp
     .src(_.sprite.svg.dir + _.sprite.svg.select)
     .pipe(
       svgSprite({
         selector: "svg-%f",
-        cssFile: _.app.out + _.style.base + "svgSprite.scss",
+        cssFile: _.dist.out + _.style.base + "svgSprite.scss",
         svg: {
           sprite: "sprite.svg"
         },
         preview: false
       })
     )
-    .pipe(gulp.dest(_.app.images));
+    .pipe(gulp.dest(_.dist.images));
 });
 
-gulp.task("pug", function buildHTML() {
+/////Работа со шрифтами
+gulp.task("ttf2woff2", function() {
+  return gulp
+    .src(_.fonts.dir + _.fonts.select)
+    .pipe(ttf2woff2())
+    .pipe(gulp.dest(_.dist.fonts));
+});
+
+/////Работа с шаблонами страниц
+gulp.task("pug", function() {
   return gulp
     .src(_.pug.dir + _.pug.select.pages)
     .pipe(
       pug({
-        pretty: true
+        data: { getData },
+        pretty: true,
+        wrapLineLength: 120,
+        maxPreserveNewlines: 50
       })
     )
-    .pipe(gulp.dest(dirApp))
+    .pipe(gulp.dest(dirDist))
     .pipe(browserSyns.reload({ stream: true }));
 });
 
 gulp.task("watch", function() {
   //Стили и скрипты
-  gulp.watch(_.style.dist + _.style.select.all, gulp.parallel("scss"));
-  gulp.watch(_.js.dist + _.js.select, gulp.parallel("js"));
+  gulp.watch(_.style.dir + _.style.select.all, gulp.parallel("scss"));
+  gulp.watch(_.js.dir + _.js.select, gulp.parallel("js"));
 
   //Сборка страниц из шаблонов
   gulp.watch(_.pug.dir + _.pug.select.all, gulp.parallel("pug"));
+  gulp.watch(_.pug.data.dir + _.pug.data.select, gulp.parallel("pug"));
 
   //Сжатие картинок
   gulp.watch(_.minImg.dir + _.minImg.select, gulp.parallel("images"));
 
   //спрайты
   gulp.watch(
-    _.sprite.png.dist + _.sprite.png.select,
+    _.sprite.png.dir + _.sprite.png.select,
     gulp.parallel("pngSprite")
   );
   gulp.watch(
-    _.sprite.svg.dist + _.sprite.svg.select,
+    _.sprite.svg.dir + _.sprite.svg.select,
     gulp.parallel("svgSprite")
   );
 
   //конвертация
   gulp.watch(_.fonts.dir + _.fonts.select, gulp.parallel("ttf2woff2"));
 });
-
 gulp.task("browser-sync", function() {
   browserSyns.init({
     server: {
-      baseDir: dirApp
+      baseDir: dirDist
     }
   });
 });
+gulp.task("clear-build", function() {
+  return gulp
+    .src([_.dist.js, _.dist.css, _.dist.images], {
+      read: false,
+      allowEmpty: true
+    })
+    .pipe(clean());
+});
 
 gulp.task(
-  "default",
-  gulp.parallel(
-    "scss",
-    "libs-js",
-    "js",
-    "pug",
-    "images",
-    "pngSprite",
-    "svgSprite",
-    "browser-sync",
-    "watch"
-  )
+  "after-clean",
+  gulp.parallel("scss", "js", "pug", "images", "pngSprite", "svgSprite")
 );
+gulp.task("build", gulp.series("clear-build", "after-clean"));
+gulp.task("dev", gulp.parallel("build", "browser-sync", "watch"));
+gulp.task("default", gulp.parallel("dev"));
