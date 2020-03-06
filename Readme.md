@@ -1,43 +1,59 @@
 # Для npm:
 
-1. загрузка зависимостей
-   - `$ npm install`
-2. сборка проекта
-   - `$ npm build`
-3. режим отслеживания изменений
-   - `$ npm watch`
-4. режим разработки(включает в себя 2 предыдущих + browser-sync)
-   - `$ npm dev`
+## загрузка зависимостей
+
+- `$ npm install`
+
+## сборка проекта
+
+- `$ npm build`
+
+## режим отслеживания изменений
+
+- `$ npm watch`
+
+## режим разработки(включает в себя 2 предыдущих + browser-sync)
+
+- `$ npm dev`
+
+
 
 # Для yarn:
 
-1. загрузка зависимостей
-   - `$ yarn`
-2. сборка проекта
-   - `$ yarn build`
-3. режим отслеживания изменений
-   - `$ yarn watch`
-4. режим разработки(включает в себя 2 предыдущих + browser-sync)
-   - `$ yarn dev`
+## загрузка зависимостей
+
+- `$ yarn`
+
+## сборка проекта
+
+- `$ yarn build`
+
+## режим отслеживания изменений
+
+- `$ yarn watch`
+
+## режим разработки(включает в себя 2 предыдущих + browser-sync)
+
+- `$ yarn dev`
 
 # Общее
 
-1. Для использования Тасков установите модуль gulp-cli глобально
+## Для использования Тасков установите модуль gulp-cli глобально
 
    - `$ npm gulp-cli -g`
 
-2. Настройки тасков тут
+## Настройки тасков тут
 
    - `./gulpfile.js`
 
-3. Сборка проекта
+## Сборка проекта
 
    - `$ gulp build`
    - `$ yarn build`
    - `$ npm build`
    - в папку `./dist`
 
-4. Исходники проекта лежат в папках
+## Исходники проекта лежат в папках
 
    - `/app`
      - `data` контент для pug
@@ -56,21 +72,21 @@
      - `svgSprite` изображени .svg формата для спрайта
        - class"svg-icon svg-file_name"
 
-5. запуск сервера
+## запуск сервера
 
    - `$ gulp dev`
    - `$ yarn dev`
    - `$ npm dev`
 
-6. tasks
+## tasks
 
-   1. для вызова таска пропишите
+   ### для вызова таска пропишите
 
-      - `$ gulp имя_таска`
-      - или если нет пакета gulp-cli
-        - `$ yarn gulp имя_таска`
+   - `$ gulp имя_таска`
+   - или если нет пакета gulp-cli
+     - `$ yarn gulp имя_таска`
 
-   2. таски:
+   ### таски:
 
       1. `font2css`
 
@@ -118,21 +134,20 @@
 
       - Отчистка директории `./dist`
 
-      * При использовании команды
-        `$ gulp`
+      11. При использовании команды `$ gulp`
 
         - будет выполнен список тасков
 
-          1. `clear-build`
-          2. `svgSprite`,
-          3. `pngSprite`,
-          4. `font2css`,
-          5. `scss`,
-          6. `js`,
-          7. `pug`,
-          8. `images`,
-          9. `browser-sync`,
-          10. `watch`
+          - `clear-build`
+          - `svgSprite`,
+          - `pngSprite`,
+          - `font2css`,
+          - `scss`,
+          - `js`,
+          - `pug`,
+          - `images`,
+          - `browser-sync`,
+          - `watch`
 
 # Скрипты
 
@@ -161,12 +176,12 @@
    - `font-style` должен быть одним из `normal`, `italic` или `oblique`.
 
    * Например
-     - Lato.woff
-     - Lato-italic.woff
-     - Lato-bold.woff
-     - Lato-700.woff
-     - Lato-thin-italic.woff
-     - Lato-100-italic.woff
+     - `Lato.woff`
+     - `Lato-italic.woff`
+     - `Lato-bold.woff`
+     - `Lato-700.woff`
+     - `Lato-thin-italic.woff`
+     - `Lato-100-italic.woff`
 
 2. [Все шрифты должны лежать тут app/static/fonts/](app/static/fonts/)
 
