@@ -16,8 +16,6 @@
 
 - `$ npm dev`
 
-
-
 # Для yarn:
 
 ## загрузка зависимостей
@@ -40,114 +38,114 @@
 
 ## Для использования Тасков установите модуль gulp-cli глобально
 
-   - `$ npm gulp-cli -g`
+- `$ npm gulp-cli -g`
 
 ## Настройки тасков тут
 
-   - `./gulpfile.js`
+- `./gulpfile.js`
 
 ## Сборка проекта
 
-   - `$ gulp build`
-   - `$ yarn build`
-   - `$ npm build`
-   - в папку `./dist`
+- `$ gulp build`
+- `$ yarn build`
+- `$ npm build`
+- в папку `./dist`
 
 ## Исходники проекта лежат в папках
 
-   - `/app`
-     - `data` контент для pug
-     - `templates`
-       - `layouts` шаблоны для pug
-       - `mixins` миксины для pug
-       - `pages` страницы проекта
-     - `scripts` исходные файлы скриптов
-     - `scss` исходные файлы стилей
-       - `base` подключение шрифтов, миксины, стили для спрайтов
-     - `static`
-       - `fonts` исходные файлы шрифтов
-       - `images` изображения проекта (будут автоматически ужиматься и создаваться в ./app/images/)
-     - `pngSprite` изображени .png формата для спрайта
-       - class"icon icon-file_name"
-     - `svgSprite` изображени .svg формата для спрайта
-       - class"svg-icon svg-file_name"
+- `/app`
+  - `data` контент для pug
+  - `templates`
+    - `layouts` шаблоны для pug
+    - `mixins` миксины для pug
+    - `pages` страницы проекта
+  - `scripts` исходные файлы скриптов
+  - `scss` исходные файлы стилей
+    - `base` подключение шрифтов, миксины, стили для спрайтов
+  - `static`
+    - `fonts` исходные файлы шрифтов
+    - `images` изображения проекта (будут автоматически ужиматься и создаваться в ./app/images/)
+  - `pngSprite` изображени .png формата для спрайта
+    - class"icon icon-file_name"
+  - `svgSprite` изображени .svg формата для спрайта
+    - class"svg-icon svg-file_name"
 
 ## запуск сервера
 
-   - `$ gulp dev`
-   - `$ yarn dev`
-   - `$ npm dev`
+- `$ gulp dev`
+- `$ yarn dev`
+- `$ npm dev`
 
 ## tasks
 
-   ### для вызова таска пропишите
+### для вызова таска пропишите
 
-   - `$ gulp имя_таска`
-   - или если нет пакета gulp-cli
-     - `$ yarn gulp имя_таска`
+- `$ gulp имя_таска`
+- или если нет пакета gulp-cli
+  - `$ yarn gulp имя_таска`
 
-   ### таски:
+### таски:
 
-      1. `font2css`
+  1. `font2css`
 
-      - конвертация шрифтов в base64 и подключение в `font.css`
+  - конвертация шрифтов в base64 и подключение в `font.css`
 
-      2. `pngSprite`
+  2. `pngSprite`
 
-      - формирование спрайта из .png
-        - из файлов `./app/static/images/pngSprite/\*.png`
-        - в файл `./dist/images/sprite.png`
+  - формирование спрайта из .png
+    - из файлов `./app/static/images/pngSprite/\*.png`
+    - в файл `./dist/images/sprite.png`
 
-      3. `svgSprite`
+  3. `svgSprite`
 
-      - формирование спрайта из `.svg`
-        - из файлов `./app/static/images/svgSprite/\*.png`
-        - в файл `./dist/images/sprite.svg`
+  - формирование спрайта из `.svg`
+    - из файлов `./app/static/images/svgSprite/\*.png`
+    - в файл `./dist/images/sprite.svg`
 
-      4. `scss`
+  4. `scss`
 
-      - минификация и объединение всех файлов стилей в `./dist/css/style.css`
+  - минификация и объединение всех файлов стилей в `./dist/css/style.css`
 
-      5. `js`
+  5. `js`
 
-      - оптимизация скриптов проекта средствами `webpack`
-        - `es6 => es5`
-        - в `./dist/js/main.js`
+  - оптимизация скриптов проекта средствами `webpack`
+    - `es6 => es5`
+    - в `./dist/js/main.js`
 
-      6. `images`
+  6. `images`
 
-      - сжатие изображений без потери качества в папку `./dist/images/`
+  - сжатие изображений без потери качества в папку `./dist/images/`
 
-      7. `pug`
+  7. `pug`
 
-      - сборка страниц `./dist`
+  - сборка страниц `./dist`
 
-      8. `watch`
+  8. `watch`
 
-      - запуск observer для контроля изменений в файлах и запуска необходимых тасков для пересборки проекта
+  - запуск observer для контроля изменений в файлах и запуска необходимых тасков для пересборки проекта
 
-      9. `browser-sync`
+  9. `browser-sync`
 
-      - запуск локального сервера, с автоперезагрузкой страницы при изменении проекта
+  - запуск локального сервера, с автоперезагрузкой страницы при изменении проекта
 
-      10. `clear-build`
+  10. `clear-build`
 
-      - Отчистка директории `./dist`
+  - Отчистка директории `./dist`
 
-      11. При использовании команды `$ gulp`
+  11. При использовании команды `$ gulp`
 
-        - будет выполнен список тасков
+    - будет выполнен список тасков
 
-          - `clear-build`
-          - `svgSprite`,
-          - `pngSprite`,
-          - `font2css`,
-          - `scss`,
-          - `js`,
-          - `pug`,
-          - `images`,
-          - `browser-sync`,
-          - `watch`
+      - `clear-build`
+      - `svgSprite`,
+      - `pngSprite`,
+      - `font2css`,
+      - `scss`,
+      - `js`,
+      - `pug`,
+      - `images`,
+      - `browser-sync`,
+      - `watch`
 
 # Скрипты
 
