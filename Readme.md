@@ -134,18 +134,18 @@
 
   11. При использовании команды `$ gulp`
 
-    - будет выполнен список тасков
-
-      - `clear-build`
-      - `svgSprite`,
-      - `pngSprite`,
-      - `font2css`,
-      - `scss`,
-      - `js`,
-      - `pug`,
-      - `images`,
-      - `browser-sync`,
-      - `watch`
+  - будет выполнен список тасков
+  
+    - `clear-build`
+    - `svgSprite`,
+    - `pngSprite`,
+    - `font2css`,
+    - `scss`,
+    - `js`,
+    - `pug`,
+    - `images`,
+    - `browser-sync`,
+    - `watch`
 
 # Скрипты
 
