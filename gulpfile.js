@@ -1,20 +1,22 @@
 let gulp = require("gulp"),
   sass = require("gulp-sass"),
-  postcss = require('gulp-postcss'),
-  cssnano = require('gulp-cssnano'),
-  rename = require('gulp-rename'),
+  postcss = require("gulp-postcss"),
+  cssnano = require("gulp-cssnano"),
+  rename = require("gulp-rename"),
   browserSyns = require("browser-sync"),
   pug = require("gulp-pug"),
   imageMin = require("gulp-imagemin"),
   spritesmith = require("gulp.spritesmith"),
   merge = require("merge-stream"),
-  ttf2woff2 = require("gulp-ttf2woff2"),
   svgSprite = require("gulp-svg-sprites"),
   filter = require("filter"),
   webpack = require("webpack-stream"),
   getData = require("jade-get-data")("app/data"),
+  concat = require("gulp-concat"),
+  font2css = require("gulp-font2css").default,
   clean = require("gulp-clean");
 
+//конфигурации
 let dirDist = "./dist/";
 let dirApp = "./app/";
 let _ = {
@@ -27,7 +29,7 @@ let _ = {
   },
   fonts: {
     dir: dirApp + "static/fonts/",
-    select: "*.ttf"
+    select: "**/*.{otf,ttf,woff,woff2}"
   },
   minImg: {
     dir: dirApp + "static/images/",
@@ -95,13 +97,15 @@ gulp.task("scss", function() {
   return gulp
     .src(_.style.dir + _.style.select.conv)
     .pipe(sass({ outputStyle: "compressed" }))
-    .pipe(postcss([
-      require('autoprefixer'),
-      require('postcss-discard-comments'),
-      require('postcss-import'),
-    ]))
+    .pipe(
+      postcss([
+        require("autoprefixer"),
+        require("postcss-discard-comments"),
+        require("postcss-import")
+      ])
+    )
     .pipe(cssnano({ zIndex: false }))
-    .pipe(rename({ suffix: '.min' }))
+    .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest(_.dist.css))
     .pipe(browserSyns.reload({ stream: true }));
 });
@@ -146,7 +150,8 @@ gulp.task("svgSprite", function() {
     .src(_.sprite.svg.dir + _.sprite.svg.select)
     .pipe(
       svgSprite({
-        selector: "svg-%f",
+        //selector: "svg-%f",
+        common: "svg",
         cssFile: _.dist.out + _.style.base + "svgSprite.scss",
         svg: {
           sprite: "sprite.svg"
@@ -158,11 +163,12 @@ gulp.task("svgSprite", function() {
 });
 
 /////Работа со шрифтами
-gulp.task("ttf2woff2", function() {
+gulp.task("font2css", function() {
   return gulp
     .src(_.fonts.dir + _.fonts.select)
-    .pipe(ttf2woff2())
-    .pipe(gulp.dest(_.dist.fonts));
+    .pipe(font2css())
+    .pipe(concat("fonts.css"))
+    .pipe(gulp.dest(_.style.base));
 });
 
 /////Работа с шаблонами страниц
@@ -204,7 +210,7 @@ gulp.task("watch", function() {
   );
 
   //конвертация
-  gulp.watch(_.fonts.dir + _.fonts.select, gulp.parallel("ttf2woff2"));
+  gulp.watch(_.fonts.dir + _.fonts.select, gulp.parallel("font2css"));
 });
 gulp.task("browser-sync", function() {
   browserSyns.init({
@@ -215,17 +221,18 @@ gulp.task("browser-sync", function() {
 });
 gulp.task("clear-build", function() {
   return gulp
-    .src([_.dist.js, _.dist.css, _.dist.images], {
+    .src(dirDist, {
       read: false,
       allowEmpty: true
     })
     .pipe(clean());
 });
 
-gulp.task(
-  "after-clean",
-  gulp.parallel("scss", "js", "pug", "images", "pngSprite", "svgSprite")
-);
+gulp.task("pre-scss", gulp.parallel("pngSprite", "svgSprite", "font2css"));
+gulp.task("styles", gulp.series("pre-scss", "scss"));
+
+gulp.task("after-clean", gulp.parallel("styles", "js", "pug", "images"));
+
 gulp.task("build", gulp.series("clear-build", "after-clean"));
 gulp.task("dev", gulp.parallel("build", "browser-sync", "watch"));
 gulp.task("default", gulp.parallel("dev"));

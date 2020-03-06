@@ -1,8 +1,8 @@
-.icon {
+.svg {
     font-size: 10px;
 }
 
-.icon:before {
+.svg:before {
     content:' ';
     vertical-align:middle;
     display: inline-block;
@@ -11,13 +11,13 @@
     background-size: 4.3em 6.7em;
 }
 
-.no-svg .icon:before {
+.no-svg .svg:before {
     background-image: url("../sprite.png");
 }
 
 
 
-  .icon.svg-str-down:before {
+  .svg.str-down:before {
       background-position: 0em 0em;
       width: 4.3em;
       height: 4.3em;
@@ -26,7 +26,7 @@
 
 
 
-  .icon.svg-str-right-white:before {
+  .svg.str-right-white:before {
       background-position: 0em -4.3em;
       width: 2.6em;
       height: 0.8em;
@@ -35,7 +35,7 @@
 
 
 
-  .icon.svg-str-up:before {
+  .svg.str-up:before {
       background-position: 0em -5.1em;
       width: 1.5em;
       height: 0.8em;
@@ -44,7 +44,7 @@
 
 
 
-  .icon.svg-str-up-blue:before {
+  .svg.str-up-blue:before {
       background-position: 0em -5.9em;
       width: 1.5em;
       height: 0.8em;

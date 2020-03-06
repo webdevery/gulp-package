@@ -1,10 +1,6 @@
 import $ from "jquery";
-import Swiper from "swiper";
+import App from "./main.js";
 
 $(document).ready(function() {
-  var mySwiper = new Swiper(".slider", {
-    speed: 400,
-    spaceBetween: 100,
-    slidesPerView: 3
-  });
+  App();
 });
