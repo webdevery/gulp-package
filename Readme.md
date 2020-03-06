@@ -70,19 +70,15 @@
         `$ yarn gulp имя_таска`
 
    2. таски:
-
-      - ttf2woff2
-
-        - конвертация шрифтов ttf в woff2
-          - из папки ./app/static/fonts/
-          - в папку ./dist/fonts
-
+      - font2css
+        - конвертация шрифтов в base64 и подключение в font.css
+          
       - pngSprite
         - формирование спрайта из .png
           - из файлов ./app/static/images/pngSprite/\*.png
           - в файл ./dist/images/sprite.png
+          
       - svgSprite
-
         - формирование спрайта из .svg
           - из файлов ./app/static/images/svgSprite/\*.png
           - в файл ./dist/images/sprite.svg
