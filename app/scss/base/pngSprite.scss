@@ -18,8 +18,8 @@ $icon-logo-width: 696px;
 $icon-logo-height: 692px;
 $icon-logo-total-width: 1752px;
 $icon-logo-total-height: 992px;
-$icon-logo-image: 'sprite.png';
-$icon-logo: (1056px, 0px, -1056px, 0px, 696px, 692px, 1752px, 992px, 'sprite.png', 'icon-logo', );
+$icon-logo-image: '../images/sprite.png';
+$icon-logo: (1056px, 0px, -1056px, 0px, 696px, 692px, 1752px, 992px, '../images/sprite.png', 'icon-logo', );
 $icon-loog-full-name: 'icon-loog full';
 $icon-loog-full-x: 0px;
 $icon-loog-full-y: 0px;
@@ -29,13 +29,13 @@ $icon-loog-full-width: 1056px;
 $icon-loog-full-height: 992px;
 $icon-loog-full-total-width: 1752px;
 $icon-loog-full-total-height: 992px;
-$icon-loog-full-image: 'sprite.png';
-$icon-loog-full: (0px, 0px, 0px, 0px, 1056px, 992px, 1752px, 992px, 'sprite.png', 'icon-loog full', );
+$icon-loog-full-image: '../images/sprite.png';
+$icon-loog-full: (0px, 0px, 0px, 0px, 1056px, 992px, 1752px, 992px, '../images/sprite.png', 'icon-loog full', );
 $spritesheet-width: 1752px;
 $spritesheet-height: 992px;
-$spritesheet-image: 'sprite.png';
+$spritesheet-image: '../images/sprite.png';
 $spritesheet-sprites: ($icon-logo, $icon-loog-full, );
-$spritesheet: (1752px, 992px, 'sprite.png', $spritesheet-sprites, );
+$spritesheet: (1752px, 992px, '../images/sprite.png', $spritesheet-sprites, );
 
 // The provided mixins are intended to be used with the array-like variables
 //

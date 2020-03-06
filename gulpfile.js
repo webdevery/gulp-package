@@ -25,7 +25,7 @@ let _ = {
     fonts: dirDist + "fonts/",
     js: dirDist + "js/",
     css: dirDist + "css/",
-    out: "../../"
+    out: "../"
   },
   fonts: {
     dir: dirApp + "static/fonts/",
@@ -131,7 +131,7 @@ gulp.task("pngSprite", function() {
     .src(_.sprite.png.dir + _.sprite.png.select) // путь, откуда берем картинки для спрайта
     .pipe(
       spritesmith({
-        imgName: "sprite.png",
+        imgName: "../images/sprite.png",
         cssName: "pngSprite.scss",
         cssFormat: "scss",
         algorithm: "binary-tree",
@@ -150,16 +150,16 @@ gulp.task("svgSprite", function() {
     .src(_.sprite.svg.dir + _.sprite.svg.select)
     .pipe(
       svgSprite({
-        //selector: "svg-%f",
-        common: "svg",
+        selector: "svg-%f",
+        common: "svg-icon",
         cssFile: _.dist.out + _.style.base + "svgSprite.scss",
         svg: {
-          sprite: "sprite.svg"
+          sprite: "images/sprite.svg"
         },
         preview: false
       })
     )
-    .pipe(gulp.dest(_.dist.images));
+    .pipe(gulp.dest(dirDist));
 });
 
 /////Работа со шрифтами
@@ -230,9 +230,9 @@ gulp.task("clear-build", function() {
 
 gulp.task("pre-scss", gulp.parallel("pngSprite", "svgSprite", "font2css"));
 gulp.task("styles", gulp.series("pre-scss", "scss"));
-
 gulp.task("after-clean", gulp.parallel("styles", "js", "pug", "images"));
+gulp.task("after-build", gulp.parallel("browser-sync",  "watch"));
 
 gulp.task("build", gulp.series("clear-build", "after-clean"));
-gulp.task("dev", gulp.parallel("build", "browser-sync", "watch"));
+gulp.task("dev", gulp.series("build", "after-build"));
 gulp.task("default", gulp.parallel("dev"));

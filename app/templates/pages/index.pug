@@ -1,9 +1,5 @@
 extends ../layouts/default.pug
 
-mixin slider(json)
-  each data in json
-    .swiper-slide #{data.name}
-
 block variables
  -var pageTitle='Главная'
 
@@ -12,3 +8,5 @@ block content
         .swiper-container.slider
             .swiper-wrapper
                 +slider(getData('slidesOnMain'))
+    +icon('car','svg')
+    +icon('logo')

@@ -1,24 +1,96 @@
-.svg {
+.svg-icon {
     font-size: 10px;
 }
 
-.svg:before {
+.svg-icon:before {
     content:' ';
     vertical-align:middle;
     display: inline-block;
-    background-image: url("../sprite.svg");
+    background-image: url("../images/sprite.svg");
     background-repeat: no-repeat;
-    background-size: 4.3em 6.7em;
+    background-size: 40.3em 116.7em;
 }
 
-.no-svg .svg:before {
-    background-image: url("../sprite.png");
+.no-svg .svg-icon:before {
+    background-image: url("../images/sprite.png");
 }
 
 
 
-  .svg.str-down:before {
+  .svg-icon.svg-car:before {
       background-position: 0em 0em;
+      width: 13.6em;
+      height: 7.2em;
+  }
+
+
+
+
+  .svg-icon.svg-certificate:before {
+      background-position: 0em -7.2em;
+      width: 7.7em;
+      height: 9.1em;
+  }
+
+
+
+
+  .svg-icon.svg-logotype:before {
+      background-position: 0em -16.3em;
+      width: 15.1em;
+      height: 9.6em;
+  }
+
+
+
+
+  .svg-icon.svg-navigation:before {
+      background-position: 0em -25.9em;
+      width: 7.9em;
+      height: 7.8em;
+  }
+
+
+
+
+  .svg-icon.svg-pack:before {
+      background-position: 0em -33.7em;
+      width: 40.3em;
+      height: 24.2em;
+  }
+
+
+
+
+  .svg-icon.svg-presentation:before {
+      background-position: 0em -57.9em;
+      width: 7.8em;
+      height: 9.8em;
+  }
+
+
+
+
+  .svg-icon.svg-prevslogo:before {
+      background-position: 0em -67.7em;
+      width: 24.2em;
+      height: 24.3em;
+  }
+
+
+
+
+  .svg-icon.svg-statistics:before {
+      background-position: 0em -92em;
+      width: 10.3em;
+      height: 7em;
+  }
+
+
+
+
+  .svg-icon.svg-str-down:before {
+      background-position: 0em -99em;
       width: 4.3em;
       height: 4.3em;
   }
@@ -26,8 +98,8 @@
 
 
 
-  .svg.str-right-white:before {
-      background-position: 0em -4.3em;
+  .svg-icon.svg-str-right-white:before {
+      background-position: 0em -103.3em;
       width: 2.6em;
       height: 0.8em;
   }
@@ -35,8 +107,8 @@
 
 
 
-  .svg.str-up:before {
-      background-position: 0em -5.1em;
+  .svg-icon.svg-str-up:before {
+      background-position: 0em -104.1em;
       width: 1.5em;
       height: 0.8em;
   }
@@ -44,10 +116,19 @@
 
 
 
-  .svg.str-up-blue:before {
-      background-position: 0em -5.9em;
+  .svg-icon.svg-str-up-blue:before {
+      background-position: 0em -104.9em;
       width: 1.5em;
       height: 0.8em;
+  }
+
+
+
+
+  .svg-icon.svg-vote:before {
+      background-position: 0em -105.7em;
+      width: 12.1em;
+      height: 11em;
   }
 
 

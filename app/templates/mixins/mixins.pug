@@ -1,0 +1,12 @@
+mixin icon(iconName, type = 'png')
+    if(type == 'png')
+        i(class='icon '+'icon-'+iconName)
+    else
+        i(class='svg-icon '+'svg-'+iconName)
+
+//
+// ниже для примера
+//
+mixin slider(json)
+  each data in json
+    .swiper-slide #{data.name}
