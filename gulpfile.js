@@ -11,9 +11,12 @@ let gulp = require("gulp"),
   svgSprite = require("gulp-svg-sprites"),
   filter = require("filter"),
   webpack = require("webpack-stream"),
+  webpackConfig = require("./webpack.config.js"),
+  gutil = require("gulp-util"),
   getData = require("jade-get-data")("app/data"),
   concat = require("gulp-concat"),
   font2css = require("gulp-font2css").default,
+  errorHandler = require("gulp-error-handle"),
   clean = require("gulp-clean");
 
 //конфигурации
@@ -75,22 +78,6 @@ let _ = {
     start: "index.js"
   }
 };
-let WPConf = {
-  output: {
-    filename: "scripts.min.js"
-  },
-  module: {
-    rules: [
-      {
-        test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: "babel-loader"
-        }
-      }
-    ]
-  }
-};
 
 ///Работа со стилями
 gulp.task("scss", function() {
@@ -111,12 +98,20 @@ gulp.task("scss", function() {
 });
 
 /////Работа со скриптами
-gulp.task("js", function() {
-  return gulp
+const logError = function(err) {
+  //gutil.log(err);
+  this.emit('end');
+};
+gulp.task("js", function(callback) {
+  gulp
     .src(_.js.dir + _.js.start)
-    .pipe(webpack(WPConf))
+    .pipe(webpack(webpackConfig))
+    .pipe(errorHandler(logError))
     .pipe(gulp.dest(_.dist.js));
+
+    callback()
 });
+
 
 /////Работа с картинками
 gulp.task("images", function() {
@@ -231,7 +226,7 @@ gulp.task("clear-build", function() {
 gulp.task("pre-scss", gulp.parallel("pngSprite", "svgSprite", "font2css"));
 gulp.task("styles", gulp.series("pre-scss", "scss"));
 gulp.task("after-clean", gulp.parallel("styles", "js", "pug", "images"));
-gulp.task("after-build", gulp.parallel("browser-sync",  "watch"));
+gulp.task("after-build", gulp.parallel("browser-sync", "watch"));
 
 gulp.task("build", gulp.series("clear-build", "after-clean"));
 gulp.task("dev", gulp.series("build", "after-build"));

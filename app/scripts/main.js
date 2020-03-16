@@ -1,7 +1,7 @@
 import $ from "jquery";
 import Swiper from "swiper";
-
-export let App = function() {
+let s = s;
+export default App = function() {
   var mySwiper = new Swiper(".slider", {
     speed: 400,
     spaceBetween: 100,
