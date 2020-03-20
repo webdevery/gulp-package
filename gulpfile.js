@@ -38,16 +38,16 @@ let _ = {
   },
   minImg: {
     dir: dirApp + "static/images/",
-    select: "*.*"
+    select: "**/*"
   },
   sprite: {
     png: {
       dir: dirApp + "static/images/pngSprite/",
-      select: "*.png"
+      select: "**/*.png"
     },
     svg: {
       dir: dirApp + "static/images/svgSprite/",
-      select: "*.svg"
+      select: "**/*.svg"
     }
   },
   pug: {
