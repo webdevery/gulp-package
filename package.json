@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "fancybox": "^3.0.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "swiper": "^5.3.6"
   },
   "scripts": {
