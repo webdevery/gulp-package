@@ -1,10 +1,9 @@
 @import "../../node_modules/swiper/swiper.scss";
 @import "../../node_modules/fancybox/dist/scss/jquery.fancybox";
 @import "../../node_modules/normalize.css/normalize";
-@import "base/fonts";
-@import "base/variables";
-@import "base/mixins";
-@import "base/pngSprite";
-@import "base/svgSprite";
-@import "base/default";
+@import "base/import";
+@import "mixins/import";
+@import "modules/import";
+@import "components/import";
+@import "pages/import";
 
