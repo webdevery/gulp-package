@@ -7,6 +7,18 @@ mixin icon(iconName, type = 'png')
 //
 // ниже для примера
 //
-mixin slider(json)
+mixin sliderSimple(json)
   each data in json
     .swiper-slide #{data.name}
+
+mixin slider(classSlider, pagination,navigation,scrollbar)
+  div(class=classSlider).swiper-container
+    .swiper-wrapper
+      block
+    if(pagination)
+      .swiper-pagination
+    if(navigation)
+      .swiper-button-prev
+      .swiper-button-next
+    if(scrollbar)
+      .swiper-scrollbar

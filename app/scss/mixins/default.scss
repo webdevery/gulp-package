@@ -12,19 +12,6 @@
   }
 }
 
-/*
-Миксин для быстрого выравнивания блока по центру
-Пример использования:
-div {
-  @include center-block;
-}
-*/
-@mixin center-block {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 
 /*
 Миксин для адаптивных свойств

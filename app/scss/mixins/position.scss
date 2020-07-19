@@ -1,0 +1,15 @@
+/*
+Миксин для быстрого выравнивания блока по центру
+*/
+@mixin pos-center-block {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin pos-start-block {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
