@@ -1,4 +1,3 @@
-import $ from "jquery";
 
 export default class Listener {
     constructor() {
@@ -18,12 +17,12 @@ export default class Listener {
             let trigger = this.triggers[key];
             if (trigger.el[trigger.field] != this.state[key]) {
                 this.state[key] = trigger.el[trigger.field];
-                this.trigger('change-' + key);
+                this.trigger(trigger.name);
             }
         }
     }
     init() {
-        this.state["body-height"] = document.body.offsetHeight;
+      
         this.updater();
     }
     on(type, handler) {
@@ -32,10 +31,11 @@ export default class Listener {
             handler: handler,
         });
     }
-    setTriggerChange(el, field, name) {
-        if (!this.triggers[name]) {
-            this.triggers[name] = {
+    setTriggerChange(el, field, nameEvent) {
+        if (!this.triggers[name+'-'+field]) {
+            this.triggers[name+'-'+field] = {
                 el: el,
+                name: nameEvent,
                 field: field,
                 val: el[field]
             }
@@ -43,8 +43,8 @@ export default class Listener {
         }
         else return false;
         /* Example
-            listener.setTriggerChange(document.body,'offsetWidth','body-width')
-            listener.on('change-body-width',function(){
+            listener.setTriggerChange(document.body,'offsetWidth','resize')
+            listener.on('resize',function(){
                 console.log('body-resize')
             })
         */
@@ -75,4 +75,5 @@ export default class Listener {
             return true;
         } else return false;
     }
-}
+  }
+  
