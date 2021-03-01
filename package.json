@@ -50,7 +50,7 @@
     "scrollmagic-plugin-gsap": "^1.0.4",
     "select2": "^4.0.13",
     "swiper": "^5.3.6",
-    "three": "^0.117.1"
+    "three": "^0.125.0"
   },
   "scripts": {
     "test": "jest",
